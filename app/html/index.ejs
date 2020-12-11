@@ -1,0 +1,62 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/html/css/bulma.min.css" >
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+    <style type="text/css">
+      body{
+        font-family: sans-serif;
+      }
+
+      h1{
+        color: tomato;
+        margin-left: 0.5em;
+        font-size: 3.5em;
+      }
+
+    </style>
+</head>
+
+<body>
+
+
+
+    <div style="width: 33%; margin: auto;">
+      
+      <div style=" display: flex;  align-items: center;  height: 300px;">
+      <img src="/html/img/pom_logo.png">
+
+      <h1>Pomodoro</h1></div>
+
+      <div style="text-align:  center;"> 
+        <div style="margin-bottom: 1em;">Upload image file to OCR</div>
+        <form ref='uploadForm' 
+          id='uploadForm' 
+          action='/upload' 
+          method='post' 
+          encType="multipart/form-data">
+            <input type="file" name="file" accept=".png,.jpg,.tif,.gif,.bmp" />
+            <input type='submit' value='Upload!' />
+        </form>   
+      </div>
+
+    </div>
+
+
+
+  
+
+
+
+</body>
+
+</html>

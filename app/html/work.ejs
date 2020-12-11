@@ -1,0 +1,529 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" type="text/css" href="/html/css/bulma.min.css" > -->
+  
+  <script src="/html/js/selection.min.js"></script>
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+<!--   <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css"> -->
+
+  <style type="text/css">
+    
+  /**
+ * Creator: Simon R.
+ */
+
+::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.55em;
+    background-color: #faf9f7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #afafaf;
+    border-radius: 0.2em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: #faf9f7;
+    font-family: 'Pacifico';
+}
+
+header {
+    text-align: center;
+    font-family: 'Pacifico';
+    letter-spacing: 0.2em;
+    font-size: 2.5em;
+    padding: 1.2em 0 0.5em 0;
+}
+
+header h1 {
+    font-size: 1em;
+    font-weight: 200;
+}
+
+header h1 .js {
+    color: #14c3e3;
+}
+
+main .sec {
+    width: 100%;
+    max-width: 50em;
+    margin: 3em auto;
+}
+
+main .sec .head {
+    display: block;
+    margin-bottom: 0.4em;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+/* details */
+
+main section.demo .info {
+    text-align: center;
+    margin: 1em 0 2em 0;
+    line-height: 2em;
+    letter-spacing: 0.1em;
+}
+
+main section.demo .box-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+main section.demo .box-wrap.green,
+main section.demo .box-wrap.blue {
+    margin-bottom: 3em;
+}
+
+main section.demo .box-wrap.red {
+    display: grid;
+    grid-template-columns: repeat(28, 1fr);
+    grid-gap: 0.4em;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-height: 25em;
+    overflow: auto;
+    padding: 0.5em;
+}
+
+main section.demo .box-wrap.red > div {
+    margin: 0;
+}
+
+main .box-wrap::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+main .boxes div {
+    height: 3em;
+    width: 3em;
+    margin: 0.2em;
+    background: #f5f4f2;
+    -webkit-box-shadow: 0 0.05em 0.2em 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.05em 0.2em 0 rgba(0, 0, 0, 0.1);
+    border-radius: 0.15em;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+main .boxes.green div.selected {
+    background: #7febc2;
+}
+
+main .boxes.blue div.selected {
+    background: #7fa0eb;
+}
+
+main .boxes.red div.selected {
+    background: #eb8181;
+}
+
+.selection {
+    background: rgba(0, 0, 255, 0.1);
+    border-radius: 0.1em;
+    border: 0.05em solid rgba(0, 0, 255, 0.2);
+}
+
+main section.demo-code pre {
+    background: #f4f1ef;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+}
+
+main section.demo .info p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.keyboard-key {
+    display: inline-block;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #7c7f91;
+    font-size: 0.85em;
+    line-height: 1em;
+    letter-spacing: -0.05em;
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    margin: 0 0.5em;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+}
+
+.selected-thing{
+  background: blue !important;
+  opacity: 0.25;
+}
+.selected-thing-added{
+  background: green !important;
+  opacity: 0.25; 
+}
+
+@media only screen and (max-width: 1000px) {
+
+    #fork-me {
+        height: 6em;
+        width: 6em;
+    }
+
+    header {
+        padding: 1em 0 0 0;
+    }
+
+    header h1 {
+        font-size: 0.8em;
+    }
+
+    main section.demo .info {
+        font-size: 0.8em;
+    }
+
+    main section.demo-code pre {
+        font-size: 0.6em;
+        margin: 0 1em;
+        overflow: scroll;
+    }
+}
+
+
+  #img-holder{
+    max-width: 49%;
+
+  }
+  #img-holder img{
+    width: 100%;
+    height: auto;
+  }
+
+  #text-holder{
+    width: 49%;
+    right: 1%;
+    top: 0;
+    position: absolute;
+
+  }
+
+  #text-holder textarea{
+    width: 99%;
+    height: 500px;
+    padding: 0.5em;
+  }
+  #new-page{
+    float: right;
+  }
+  </style>
+</head>
+
+
+<body>
+    <div id="img-holder" class="box-wrap" style="position:relative;">
+      <img id="the-image" style="pointer-events: none;" src="/image/<%=id%>">
+    </div>
+    <div id="text-holder">
+      <textarea id="text-area"></textarea>
+        
+
+
+      <button id="download">Download</button>
+      <button id="new-page">Add Page</button>
+<pre><code>
+Select with mouse and hit [Enter] key to add selection.
+Hit [Escape] key to toggle selection block to view document.        
+Add Page will save the current text and allow you to upload another page.
+Download will save text as file.
+</code></pre>
+
+    </div>
+
+
+
+<script type="text/javascript">
+
+
+
+
+        function reqListener () {
+
+
+        var hidden = false
+
+        // if there is something in the local storage add it to text area
+        if (window.localStorage.getItem('text')){
+          document.getElementById('text-area').value = window.localStorage.getItem('text')
+        }
+
+
+
+        var data = JSON.parse(this.responseText)
+
+        var img = document.getElementById('the-image'); 
+        var imgHolder = document.getElementById('img-holder'); 
+
+        let xReduceBy = img.width / img.naturalWidth
+        let yReduceBy = img.height / img.naturalHeight
+
+        console.log(img.naturalWidth,img.width,xReduceBy,yReduceBy)
+        // imgHolder.style.height=img.naturalHeight +'px';
+        // imgHolder.style.width=img.naturalWidth+'px';
+
+        console.log(data)
+        // drop the first one
+        data.textAnnotations.shift()
+
+        data.textAnnotations.forEach((b)=>{
+
+
+            let top = b.boundingPoly.vertices[0].y
+            let left = b.boundingPoly.vertices[0].x
+            let width = b.boundingPoly.vertices[1].x - b.boundingPoly.vertices[0].x
+            let height = b.boundingPoly.vertices[2].y - b.boundingPoly.vertices[0].y
+
+            top = top * xReduceBy
+            width = width * xReduceBy
+            left = left * yReduceBy
+            height = height * yReduceBy
+
+            var text = document.createElement('div')
+
+            text.style.position = 'absolute'
+            text.style.background = 'tomato'
+
+            text.classList.add('selectable')
+            text.style.top = top + 'px'
+            text.style.left = left + 'px'
+            text.style.height = height + 'px'
+            text.style.width = width + 'px'
+
+            text.dataset.text = b.description
+
+            text.dataset.top = top
+            text.dataset.left = left
+
+            imgHolder.append(text);
+            // console.log(b,text)
+
+
+        })
+        console.log(img.naturalWidth,img.naturalHeight )
+
+        // img.remove();  
+
+        const selection = Selection.create({
+
+            // Class for the selection-area
+            class: 'selection',
+
+            // All elements in this container can be selected
+            containers: ['.box-wrap'],
+
+            // The container is also the boundary in this case
+            boundaries: ['.box-wrap'],
+
+            onSelect(evt) {
+
+                // Check if clicked element is already selected
+                const selected = evt.target.classList.contains('selected-thing');
+
+                // Remove class if the user isn't pressing the control key or ⌘ key and the
+                // current target is already selected
+                if (!evt.originalEvent.ctrlKey && !evt.originalEvent.metaKey) {
+
+                    // Remove class from every element that is selected
+                    evt.selectedElements.forEach(s => s.classList.remove('selected-thing'));
+
+                    // Clear previous selection
+                    this.clearSelection();
+                }
+
+                if (!selected) {
+
+                    // Select element
+                    evt.target.classList.add('selected-thing');
+                    this.keepSelection();
+                } else {
+
+                    // Unselect element
+                    evt.target.classList.remove('selected-thing');
+                    this.removeFromSelection(evt.target);
+                }
+            },
+
+            onStart({selectedElements, originalEvent}) {
+
+                document.getElementById('text-area').blur()
+                // Remove class if the user isn't pressing the control key or ⌘ key
+                if (!originalEvent.ctrlKey && !originalEvent.metaKey) {
+
+                    // Unselect all elements
+                    selectedElements.forEach(s => s.classList.remove('selected-thing'));
+
+                    // Clear previous selection
+                    this.clearSelection();
+                }
+            },
+
+            onMove({selectedElements, changedElements}) {
+                document.getElementById('the-image').classList.remove('selected-thing')
+
+                // Add a custom class to the elements that where selected.
+                selectedElements.forEach(s => s.classList.add('selected-thing'));
+
+                // Remove the class from elements that where removed
+                // since the last selection
+                changedElements.removed.forEach(s => s.classList.remove('selected-thing'));
+            },
+
+            onStop() {
+                this.keepSelection();
+
+                document.getElementById('the-image').classList.remove('selected-thing')
+            }
+        });
+
+
+        document.addEventListener('keydown', (event)=>{
+
+          if (event.key == 'Enter' || event.code == "Enter"){
+
+            if (document.activeElement.id != 'text-area'){
+
+                let selectedDom = []
+
+                for (el of document.getElementsByClassName('selected-thing')){
+
+                  if (el.dataset.text){
+                    selectedDom.push({left:el.dataset.left,right:el.dataset.right,text:el.dataset.text})
+                  }
+
+                }
+
+                let text = selectedDom.map((t)=>{ return t.text})
+
+                text = text.join(' ').trim()
+
+
+                document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + text
+
+                let els = document.getElementsByClassName('selected-thing')
+
+
+                for (el of els){
+                    el.classList.add('selected-thing-added')
+                    // el.classList.remove('selected-thing')
+                }
+
+            }
+
+
+          }
+
+          if (event.key == 'Escape' || event.code == "Escape"){
+
+
+              console.log(hidden)
+              let els = document.getElementsByClassName('selectable')
+              if (hidden){
+                for (el of els){
+                  el.style.display = 'block'
+                }
+                hidden = false
+              }else{
+                for (el of els){
+                  el.style.display = 'none'
+                }
+                hidden = true
+              }
+
+
+
+          }
+
+
+        })
+
+
+
+        document.getElementById('download').addEventListener('click', (event)=>{
+          var content = document.getElementById('text-area').value
+          // any kind of extension (.txt,.cpp,.cs,.bat)
+          var filename =  data.filename +  ".txt";
+
+          var blob = new Blob([content], {
+          type: "text/plain;charset=utf-8"
+          });
+
+          saveAs(blob, filename);
+
+
+          window.localStorage.setItem('text','')
+
+
+        })
+        document.getElementById('new-page').addEventListener('click', (event)=>{
+         
+         document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + '[PAGE BREAK]'
+         window.localStorage.setItem('text',document.getElementById('text-area').value)
+         window.location = "/"
+
+
+        })
+
+
+
+
+
+
+
+
+
+    }
+
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    oReq.open("GET", "/meta/<%=id%>");
+    oReq.send();
+
+
+
+</script>
+
+
+</body>
+
+</html>
