@@ -15,5 +15,5 @@ services:
       NODE_ENV: development
       GOOGLE_APPLICATION_CREDENTIALS: /app/GOOGLE_APPLICATION_CREDENTIALS.json
     ports:
-      - 3000:3000
+      - 5555:5555
     command: npm run dev    
