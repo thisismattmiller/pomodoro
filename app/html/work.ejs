@@ -730,18 +730,23 @@ main section.demo .info p {
                     for (let d of this.data){
                         let newVal = {}
 
-                        for (let key in d){                            
-                            for (let v of d[key]){
+                        for (let key in d){   
+                            
+                            if (d[key]){
+                                for (let v of d[key]){
 
-                                if (v.value.trim() != ''){
+                                    if (v.value.trim() != ''){
 
-                                    if (!newVal[key]){
-                                        newVal[key] = []
+                                        if (!newVal[key]){
+                                            newVal[key] = []
+                                        }
+                                        newVal[key].push(v.value)
+
                                     }
-                                    newVal[key].push(v.value)
 
                                 }
-
+                            }else{
+                                newVal[key] = []
                             }
 
 
