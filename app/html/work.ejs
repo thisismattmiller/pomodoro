@@ -480,7 +480,7 @@ main section.demo .info p {
 
 
                                 </label>
-                                <button data-tipoff="Add a regular expression that is applied to all values added to this property" style="font-size:0.6em; color: black; margin-left:1em" @click="addRegex(v)" >add regex</button> <button style="color:darkred;" v-if="modelRegexRules[v]" @click="removeRegex(v)">remove all regex</button>
+                                <button data-tipoff="Add a regular expression that is applied to all values added to this property" class="pls-blur" style="font-size:0.6em; color: black; margin-left:1em" @click="addRegex(v)" >add regex</button> <button style="color:darkred;" v-if="modelRegexRules[v]" class="pls-blur" @click="removeRegex(v)">remove all regex</button>
                             </li>
 
                             
