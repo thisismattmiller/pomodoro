@@ -30,18 +30,28 @@
       document.getElementById('status').innerHTML = 'Checking...'
 
 
-      fetch('/meta/<%=id%>').then(function(response) {
+
+
+
+
+
+      fetch('/meta/<%=id%>').then(async function(response) {
         if (response.status == 200){
 
           document.getElementById('status').innerHTML = 'Processing finished.'
           window.location="/work/<%=id%>"
+
+        } else if (response.status == 202){
+
+          let status = await response.json()
+          document.getElementById('status').innerHTML = status.status
 
         }else{
               document.getElementById('status').innerHTML = 'Not found yet...'
 
         }
       });
-    }, 5000)    
+    }, 2000)    
 
 
 

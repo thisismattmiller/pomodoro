@@ -10,9 +10,14 @@
   <!-- <link rel="stylesheet" type="text/css" href="/html/css/bulma.min.css" > -->
   
   <script src="/html/js/selection.min.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/html/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/html/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/html/img/favicon-16x16.png">
+  <link rel="manifest" href="/html/img/site.webmanifest">
+
   <!-- Place favicon.ico in the root directory -->
 
 <!--   <link rel="stylesheet" href="css/normalize.css">
@@ -188,11 +193,11 @@ main section.demo .info p {
 
 .selected-thing{
   background: blue !important;
-  opacity: 0.25;
+  opacity: 0.25 !important;
 }
 .selected-thing-added{
   background: green !important;
-  opacity: 0.25; 
+  opacity: 0.25 !important; 
 }
 
 @media only screen and (max-width: 1000px) {
@@ -247,28 +252,404 @@ main section.demo .info p {
   #new-page{
     float: right;
   }
+
+
+  #data-model-list{
+
+    list-style: none;
+
+
+  }
+
+
+  #data-model-list li::before{
+
+    content: '⤑';
+
+
+  }
+
+#structure-mode{
+    font-family: monospace;
+    font-size: 1.25em;
+    border: dotted 1px black;
+    padding: 1em;
+    margin: 0 0 1em 0;
+}
+
+#structure-mode button{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#structure-mode hr{
+    border: none;
+    border-top: dotted 1px black;
+}
+.shadow:hover{
+    filter: drop-shadow(-1px -1px 0px #000);   
+}
+
+.shadow:active {
+
+
+
+    transform: translateY(-2px) ;
+    /* Moving button 4px to y-axis */
+}
+
+#structure-mode-add-data textarea{
+    height: 20px;
+    width: 100%;
+}
+
+.activeDataElement button{
+    border: solid 2px tomato !important;
+    background: transparent;
+    font-weight: bold;
+}
+.activeDataElement button:focus{
+  outline:none;
+  box-shadow: none;
+}
+
+
+
+[data-tip] {
+
+  color: tomato;
+
+  position: relative;
+}
+[data-tip]::before, [data-tip]::after {
+  opacity: 0;
+  display: block;
+  position: absolute;
+  right: 0;
+  transition: 0.3s opacity ease-out;
+}
+[data-tip]:hover::before, [data-tip]:hover::after {
+  opacity: 1;
+  z-index: 1;
+}
+[data-tip]::before {
+  color: #222;
+  content: attr(data-tip);
+  bottom: calc(100% + 14px);
+  width: 35ch;
+  font-size: 15px;
+  background-color: tomato;
+  border-radius: 4px 4px 0 4px;
+  padding: 15px;
+  z-index: -1;
+}
+[data-tip]::after {
+  content: "";
+  width: 0;
+  bottom: 100%;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid tomato;
+}
+
+
+.snippet-icon{
+    max-height: 50px;
+
+    cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>❌</text></svg>") 16 0,auto; 
+
+}
+
+.snippet-holder{
+    display: inline-block;
+}
+.snippet-holder:hover .snippet-preview-holder{
+    display: flex;
+}
+
+
+.snippet-preview-holder{
+    display: none;
+    position: absolute;
+    border: solid 5px black;
+    box-shadow: 10px 10px 5px 4px rgb(0 0 0 / 75%);
+}
+
+.page-active{
+    border: solid 2px tomato !important;
+}
+.page{
+    border: solid 2px white;
+    cursor: pointer;
+}
+
+#window-resize{
+    position: absolute;
+    width: 100vw;
+    height: 200vh;
+    overflow: hidden;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    display: none;
+}
+#window-resize h1{
+    color: white;
+    font-size: 20vw;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20vh;
+    font-family: monospace;
+}
+
+#mode-holder{
+    display:flex; justify-content: end; margin-top: 2em;
+}
+#mode-holder button{
+    background: transparent;
+    border: none;
+    margin-left: 3em;
+    cursor: pointer;
+
+}
+#mode-holder button:hover{
+    transform: translateY(2px);
+
+}
+
+
+.button-mode-active{
+    color: tomato;
+}
+
+#restore-session button{
+    margin-left: 1em;
+    border: solid 1px black;
+}
+
   </style>
+
 </head>
 
 
 <body>
+
+    
+
+    <div id="window-resize">
+        
+        <h1>RESIZING...</h1>
+    </div>
+
     <div id="img-holder" class="box-wrap" style="position:relative;">
       <img id="the-image" style="pointer-events: none;" src="/image/<%=id%>">
     </div>
+
     <div id="text-holder">
-      <textarea id="text-area"></textarea>
-        
 
 
-      <button id="download">Download</button>
-      <button id="new-page">Add Page</button>
-<pre><code>
-Select with mouse and hit [Enter] key to add selection.
-Hit [Escape] key to toggle selection block to view document.        
-Add Page will save the current text and allow you to upload another page.
-Download will save text as file.
-</code></pre>
+        <div id="app">
+                
+            <div id="mode-holder">
+            <button :class="{'button-mode-active': (mode==='json'), 'pls-blur': true}" @click="toggleMode('json')">JSON Mode (new✨)</button>
+            <button :class="{'button-mode-active': (mode==='text'), 'pls-blur': true}" @click="toggleMode('text')">Text Mode</button>                
+            </div>
 
+            <div v-if="mode=='json'" id="structure-mode">
+                
+                Data Model:
+                <div style="display: flex;">
+
+                    <div style="flex:1">
+
+                        <div v-if="modelKeys.length == 0" style="font-size: 0.8em;">No properties defined<br>add with the plus icon</div>
+                        <ul id="data-model-list">
+                            <li v-for="v in modelKeys" :key="v">
+                                <span>{{v}}</span>
+                                <button class="pls-blur" data-tipoff="Remove this property" @click="dataModelRemove(v)"> 
+                                    <svg class="shadow" style="transform: translateY(2px); margin-left:4px; cursor:pointer;" width="13px" height="13px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                     <path d="m76.047 50 21.176-21.176c0.75781-0.75391 1.1719-1.7539 1.1719-2.8164s-0.41797-2.0664-1.168-2.8164l-20.418-20.418c-1.5039-1.5-4.125-1.5039-5.6328 0l-21.176 21.18-21.18-21.176c-1.5508-1.5547-4.0781-1.5547-5.6328 0l-20.41 20.414c-1.5547 1.5547-1.5547 4.0781 0 5.6328l21.176 21.176-21.176 21.176c-0.75391 0.75391-1.168 1.7539-1.168 2.8164s0.41797 2.0625 1.168 2.8203l20.414 20.41c0.75391 0.75781 1.7539 1.1719 2.8164 1.1719s2.0664-0.41797 2.8164-1.168l21.176-21.18 21.176 21.176c0.75 0.75391 1.75 1.1719 2.8125 1.1719h0.003907c1.0625 0 2.0625-0.41797 2.8203-1.168l20.414-20.414c0.75391-0.75781 1.168-1.7578 1.168-2.8242 0-1.0625-0.42188-2.0625-1.168-2.8125z"/>
+                                    </svg>
+                                </button>
+                                <input type="checkbox" :id="v+'img'" style="margin-left:0.5em" @change="togglePropertyIsBinary(v)" :name="v+'img'" /> 
+                                <label data-tipoff="Toggle this property to store IMAGE section of the document, base64 encoded in the JSON file, see the help video for more info" style="cursor: pointer;" :for="v+'img'">
+                                    
+                                    <svg width="20px" height="20px" version="1.1" viewBox="0 -15 100 100" xmlns="http://www.w3.org/2000/svg">
+                                     <path d="m12.496 17.918h75.004c2.0625 0 3.9375 0.84375 5.2969 2.2031l0.085937 0.09375c1.3086 1.3516 2.1172 3.1914 2.1172 5.207v49.168c0 2.0547-0.84375 3.9336-2.2031 5.293l-0.007813 0.007813c-1.3594 1.3555-3.2305 2.1992-5.2852 2.1992h-75.004c-2.0586 0-3.9297-0.84375-5.2891-2.2031l-0.007813-0.007813c-1.3555-1.3594-2.1992-3.2344-2.1992-5.2891v-49.168c0-2.0586 0.84375-3.9336 2.1992-5.293 1.3594-1.3633 3.2344-2.207 5.2969-2.207zm51.789 13.184c1.8906 0 3.6055 0.76953 4.8438 2.0039 1.2383 1.2383 2.0039 2.9531 2.0039 4.8438 0 1.8867-0.76953 3.5977-2.0039 4.8359-1.2383 1.2422-2.9531 2.0117-4.8438 2.0117-1.8867 0-3.5977-0.76953-4.8359-2.0039-1.2422-1.2461-2.0117-2.957-2.0117-4.8438 0-1.8906 0.76953-3.6055 2.0039-4.8438l0.09375-0.085938c1.2305-1.1875 2.9062-1.918 4.75-1.918zm2.7227 4.125c-0.69531-0.69531-1.6602-1.125-2.7227-1.125-1.0312 0-1.9688 0.40625-2.6602 1.0586l-0.0625 0.066406c-0.69531 0.69531-1.125 1.6602-1.125 2.7227s0.42969 2.0273 1.125 2.7227c0.69531 0.69141 1.6602 1.125 2.7227 1.125s2.0273-0.42969 2.7227-1.125c0.69531-0.69141 1.125-1.6562 1.125-2.7227 0-1.0625-0.42969-2.0273-1.125-2.7227zm-8.332 22.988 11.715-10.559c0.57422-0.51562 1.4414-0.50391 2.0039 0l19.609 17.672v-39.914c0-1.2031-0.47656-2.3047-1.2539-3.1133l-0.070312-0.0625c-0.81641-0.81641-1.9414-1.3242-3.1758-1.3242h-75.004c-1.2344 0-2.3594 0.50781-3.1758 1.3242-0.81641 0.8125-1.3203 1.9375-1.3203 3.1758v39.914l28.281-25.496c0.57422-0.51562 1.4414-0.50391 2.0039 0l20.391 18.383zm33.324 11.145-20.609-18.578-10.477 9.4453 8.0039 7.2148c0.61328 0.55469 0.66406 1.5 0.11328 2.1172-0.55469 0.61328-1.5 0.66406-2.1172 0.11328l-29.633-26.711-29.285 26.398v5.2188c0 1.2383 0.50391 2.3672 1.3164 3.1758 0.81641 0.81641 1.9414 1.3242 3.1797 1.3242h75.004c1.2383 0 2.3633-0.50391 3.1758-1.3164 0.81641-0.81641 1.3242-1.9414 1.3242-3.1836v-5.2188z"/>
+                                    </svg>
+
+
+                                </label>
+                                <button data-tipoff="Add a regular expression that is applied to all values added to this property" style="font-size:0.6em; color: black; margin-left:1em" @click="addRegex(v)" >add regex</button> <button style="color:darkred;" v-if="modelRegexRules[v]" @click="removeRegex(v)">remove all regex</button>
+                            </li>
+
+                            
+                            
+
+                        </ul>
+                        <button class="pls-blur" data-tipoff="Add property" @click="dataModelAdd"> 
+                            
+
+
+
+
+                            <svg class="shadow" width="15px" height="15px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                             <path d="m97.617 40.078h-35.703c-1.0938 0-1.9922-0.87891-1.9922-1.9922v-35.703c0-1.0938-0.87891-1.9922-1.9922-1.9922h-15.879c-1.0938 0-1.9922 0.87891-1.9922 1.9922v35.703c0 1.0938-0.87891 1.9922-1.9922 1.9922h-35.684c-1.0938 0-1.9922 0.87891-1.9922 1.9922v15.879c0 1.0938 0.87891 1.9922 1.9922 1.9922h35.703c1.0938 0 1.9922 0.87891 1.9922 1.9922v35.723c0 1.0938 0.87891 1.9922 1.9922 1.9922h15.879c1.0938 0 1.9922-0.87891 1.9922-1.9922v-35.742c0-1.0938 0.87891-1.9922 1.9922-1.9922h35.723c1.0938 0 1.9922-0.87891 1.9922-1.9922v-15.879c-0.039063-1.0938-0.91797-1.9727-2.0312-1.9727z"/>
+                            </svg>
+
+
+
+
+
+                        </button>
+                    </div>
+                    <div id="restore-session"  style="text-align: right; flex:1">
+                            
+                        <template v-if="hasSessionData() !== false && askedToRestore !== true">
+                            
+                            
+                            <span style="font-size:0.8em">Restore data from previous session? ({{hasSessionData()}})</span>
+                            <button @click="restoreSession(true)">yes</button>
+                            <button @click="restoreSession(false)">no</button>
+
+
+                        </template>
+
+
+                    </div>
+
+                </div>
+
+                <div id="structure-mode-add-data">
+
+
+<div style="display:flex; align-items: center; justify-content: center; background-color: whitesmoke; border: solid 1px gray;">
+    <div style="flex:0">
+        <button class="pls-blur" @click="recordPrevious" data-tipoff="Move to the previous record">
+            <svg width="35px" height="35px" version="1.1" viewBox="0 -10 100 100" xmlns="http://www.w3.org/2000/svg">
+             <path d="m6.668 8.332v80c0 0.92188 0.74609 1.668 1.6641 1.668h80c0.92188 0 1.668-0.74609 1.668-1.668v-80c0-0.91797-0.74609-1.6641-1.668-1.6641h-80c-0.91797 0-1.6641 0.74609-1.6641 1.6641zm18.871 38.824l28.281-28.285c0.65234-0.65234 1.707-0.65234 2.3594 0l7.0703 7.0703c0.65234 0.65234 0.65234 1.707 0 2.3555l-20.035 20.035 20.035 20.035c0.65234 0.65234 0.65234 1.707 0 2.3594l-7.0703 7.0703c-0.65234 0.64844-1.707 0.64844-2.3594 0l-28.281-28.285c-0.66016-0.66016-0.66016-1.6953 0-2.3555z" fill-rule="evenodd"/>
+            </svg>
+        </button>
+
+    </div>
+    <div style="flex:2">
+        <div style="display:flex; justify-content: center;">
+            <div>
+                record {{activeDataIndex + 1}} of {{data.length}} --
+                <button data-tipoff="Create new record, keyboard shortcut: '\' (backsash or pipe key)" @click="addRecord" title="Use the '\' (backward slash or pipe key) to add a new record via keyboard shortcut" class="pls-blur" style="background-color: black; color: white; padding: 0 0.20em 0 0.20em;">
+                   Add Record
+                </button>
+                <button data-tipoff="Remove this record" @click="removeRecord" class="pls-blur" style="background-color: #830000; padding: 0 0.20em 0 0.20em; color: white; margin-left:2em">
+                   Remove Record
+                </button>
+                <button data-tipoff="Download All Records" @click="download" class="pls-blur" style="padding: 0 0.20em 0 0.20em; color: white; margin-left:2em; background-color: black;">
+                   Download All
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <div style="flex:0">
+        <button class="pls-blur" @click="recordNext" data-tipoff="Move to the next record">
+            <svg width="35px" height="35px" version="1.1" viewBox="0 -10 100 100" xmlns="http://www.w3.org/2000/svg">
+             <path d="m90 8.332v80c0 0.92188-0.74609 1.668-1.668 1.668h-80c-0.91797 0-1.6641-0.74609-1.6641-1.668v-80c0-0.91797 0.74609-1.6641 1.6641-1.6641h80c0.92188 0 1.668 0.74609 1.668 1.6641zm-18.871 38.824l-28.285-28.285c-0.64844-0.65234-1.7031-0.65234-2.3555 0l-7.0703 7.0703c-0.65234 0.65234-0.65234 1.707 0 2.3555l20.035 20.035-20.035 20.035c-0.65234 0.65234-0.65234 1.707 0 2.3594l7.0703 7.0703c0.65234 0.64844 1.707 0.64844 2.3555 0l28.285-28.285c0.66016-0.66016 0.66016-1.6953 0-2.3555z" fill-rule="evenodd"/>
+            </svg>
+        </button>
+
+    </div>
+</div>
+
+
+                    <ul style="padding: 1em;">
+                        <li v-for="v in modelKeys" :key="v">
+                            <div style="display: flex;">
+                                <div style="flex:1" :class="{ activeDataElement: (hashCode(v)===activeDataElement) }"><button @click="activeDataElement = hashCode(v)" data-tipoff="Add data to this property. Keyboard Shortcut: Up and Down Arrow Keys" style="color:black">{{v}}</button></div>
+                                <div style="flex:5">
+
+                                    <template v-if="data[activeDataIndex][v]">
+                                        <div v-for="val in data[activeDataIndex][v]" :key="activeDataIndex + '-' + val.index">
+                                            
+
+                                            <template v-if="!val.binary">
+                                                <textarea  class="textarea-resize"  @input="manualChange($event, activeDataIndex,v,val.index)" :placeholder="val.value.trim() == '' ? 'this empty value will be removed from results' : ''" v-html="val.value"></textarea>    
+
+                                            </template>
+                                            <template v-else>
+                                                <div class="snippet-holder">
+                                                    <img class="snippet-icon" @click="removeImage(v,val.index)"  :src="val.value" />
+                                                    <div class="snippet-preview-holder"><img class="snippet-preview" :src="val.value" /></div>
+                                                </div>
+                                            </template>
+
+
+                                        </div>
+                                        
+                                    </template>
+                                    <template v-else-if="data[activeDataIndex][v] && data[activeDataIndex][v].length == 0">
+                                        No data
+                                    </template>
+                                    <template v-else>
+                                        No data
+                                    </template>
+
+                                </div>
+                            </div>
+                            
+
+                        </li>
+                    </ul>
+
+
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+            <div v-else id="text-mode">
+                <textarea id="text-area"></textarea>
+                <button class="pls-blur" id="download">Download</button>
+                <button class="pls-blur" id="new-page">Add Page</button>
+                <pre><code>
+                Select with mouse and hit [Enter] key to add selection.
+                Hit [Escape] key to toggle selection block to view document.        
+                Add Page will save the current text and allow you to upload another page.
+                Download will save text as file.
+
+                ✨NEW✨: Click JSON mode to create structured data. 
+                </code></pre>
+            </div>
+
+        </div>
+
+
+
+
+        <div>
+
+            <div id="pages-select-header" style="display:none">Select Page:</div>
+
+            <div id="pages-select">
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+        <div>
+            Change opacity of select blocks:
+            <input type="range" name="selectop" id="selectop" value="100">
+            <button id="clear-selected-button" style="display:none;">Clear Green Selected</button>
+            <div><input type="checkbox" name="tool-tip-toggle" id="tool-tip-toggle"/> <label for="tool-tip-toggle">Show tool tips</label> </div>
+        </div>
     </div>
 
 
@@ -277,239 +658,891 @@ Download will save text as file.
 
 
 
+        const { createApp } = Vue
 
-        function reqListener () {
 
 
-        var hidden = false
+        let vueApp = createApp({
+            data() {
+                return {
+                    
+                    mode: 'text',
+                    modelKeys: [],
+                    modelKeysBinary: {},
+                    data: [{}],
+                    modelRegexRules: {},
+                    activeDataElement: 0,
+                    activeDataIndex: 0,
+                    askedToRestore: false,
 
-        // if there is something in the local storage add it to text area
-        if (window.localStorage.getItem('text')){
-          document.getElementById('text-area').value = window.localStorage.getItem('text')
+
+                }
+            },
+
+            methods:{
+
+                hashCode : s => Math.abs(s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)),
+
+                removeRegex:function(key){
+                    delete this.modelRegexRules[key]
+                },
+
+                addRegex: function(key){
+
+                    let regex = prompt('Regex pattern (for example "[a-Z]+\\s")')
+                    let isGlobal = confirm('Should it be global? (cancel mean no)')
+                    let isCaseInsensitive = confirm('Should it be case insensitive? (cancel mean no)')
+                    let replaceWith = prompt("What string should replace it?")
+
+                    let extras = ''
+                    if (isGlobal){ extras = extras + 'g'}
+                    if (isCaseInsensitive){ extras = extras + 'i'}    
+
+                    let regexCompiled = false
+                    try{
+                        regexCompiled = new RegExp(regex, extras)
+                    }catch{
+                        alert("Sorry, javascript said that is an invalid regex")
+                    }
+
+                    if (!replaceWith){
+                        return false
+                    }
+                    console.log(this.modelRegexRules)
+
+                    if (!this.modelRegexRules[key]){
+                        this.modelRegexRules[key]=[]
+                    }
+
+                    this.modelRegexRules[key].push({
+                        regex:regex,
+                        extras: extras,
+                        replaceWith:replaceWith
+                    })
+
+                    console.log(this.modelRegexRules)
+                },
+
+                download: function(){
+
+                    let output = []
+
+                    for (let d of this.data){
+                        let newVal = {}
+
+                        for (let key in d){                            
+                            for (let v of d[key]){
+
+                                if (v.value.trim() != ''){
+
+                                    if (!newVal[key]){
+                                        newVal[key] = []
+                                    }
+                                    newVal[key].push(v.value)
+
+                                }
+
+                            }
+
+
+                        }
+                        output.push(newVal)
+                    }
+
+
+                    var filename =  "ocr_data.json";
+
+                    if (data && data.filename){
+                        filename =  data.filename +  ".json";
+
+                    }else if (data && data.pages && data.pages[0] && data.pages[0].filename){
+
+                        filename =  data.pages[0].filename +  ".json";
+                    }
+
+
+                    
+
+                    var blob = new Blob([JSON.stringify(output,null,2)], {
+                        type: "application/json"
+                    });
+                    saveAs(blob, filename);
+
+
+                },
+
+                hasSessionData: function(){
+
+                    if (this.askedToRestore){ return false}
+
+                    if (localStorage.getItem('jsonModeDate') !== null){
+                        return localStorage.getItem('jsonModeDate')
+                    }
+                    return false
+
+                },
+
+                restoreSession: function(answer){
+
+                    if (answer){
+
+                        this.data = JSON.parse(window.localStorage.getItem('jsonData'))
+                        if (window.localStorage.getItem('jsonModelKeysBinary')){
+                            this.modelKeysBinary = JSON.parse(window.localStorage.getItem('jsonModelKeysBinary'))
+                        }
+                        if (window.localStorage.getItem('jsonRegexRules')){
+                            this.modelRegexRules = JSON.parse(window.localStorage.getItem('jsonRegexRules'))
+                        }
+
+                        for (let d of this.data){
+                            for (let key in d){
+                                if (this.modelKeys.indexOf(key)==-1){
+                                    this.modelKeys.push(key)
+                                }
+                            }
+                        }
+
+                        this.askedToRestore=true
+
+                    }else{
+                        this.askedToRestore=true
+                    }
+
+                },
+
+                toggleMode: function(forceMode){
+
+                    if (forceMode){
+
+                        if (document.getElementById('text-area')){
+                            window.localStorage.setItem('text',document.getElementById('text-area').value)
+                        }
+
+                        // if (forceMode == 'text'){
+     
+                        // }else{
+
+                        // }
+
+                        this.mode = forceMode
+
+
+                        this.$nextTick(() => {
+                           if (window.localStorage.getItem('text') && document.getElementById('text-area')){
+                                console.log("HEREREREERRE")
+                              document.getElementById('text-area').value = window.localStorage.getItem('text')
+                            }     
+
+                            if(document.getElementById('text-area')){
+                                bindTextModeButtons()                       
+                            }
+                            
+
+                        })
+
+
+
+                        return
+                    }
+                    
+                    
+                    if (this.mode === 'text'){
+                        this.mode = 'json'
+                    }else{
+                        this.mode = 'text'
+                    }
+
+                },
+
+                dataModelAdd: function(){
+                    let name = prompt('Name of Property?')
+
+                    if (this.modelKeys.indexOf(name) >-1){
+                        alert('already have a property named that')
+                        return false
+                    }
+
+
+                    if(name){
+                        this.modelKeys.push(name)
+                    }
+
+                    if (this.modelKeys.length==1){
+                        this.activeDataElement = this.hashCode(this.modelKeys[0])
+                    }
+                },
+
+                togglePropertyIsBinary: function(key){
+
+                    if (this.modelKeysBinary[key]){
+                        delete this.modelKeysBinary[key]
+                    }else{
+                        this.modelKeysBinary[key] = true
+                    }
+
+
+                },
+
+                addBinaryData: function(value){
+
+                    for (let key of this.modelKeys){
+                        if (this.hashCode(key) === this.activeDataElement){
+
+                            if (!this.data[this.activeDataIndex][key]){
+                                this.data[this.activeDataIndex][key] = []
+                            }
+
+                            this.data[this.activeDataIndex][key].push({
+                                value: value,
+                                binary: true,
+                                index: this.data[this.activeDataIndex][key].length + 1
+                            })
+                        }
+
+                    }
+
+
+                },
+
+                returnPropertyIsBinary: function(key){
+
+                    if(isNaN(key)){
+                        if (this.modelKeysBinary[key]){
+                            return true
+                        }else{
+                            return false
+                        }                   
+                    }else{
+                        let k = this.modelKeys.filter((v) => { return (this.hashCode(v) == key) ? true : false  })
+                        if (this.modelKeysBinary[k[0]]){
+                            return true
+                        }else{
+                            return false
+                        }
+                    }
+
+
+                },
+
+                addRecord: function(){
+
+                    let x = {}
+
+                    for (let k of this.modelKeys){
+                        x[k] = null
+                    }
+
+                    this.data.push(x)
+                    this.activeDataIndex = this.data.length - 1
+
+                },
+
+                removeRecord: function(){
+                    if (this.data.length==1){ return false}
+
+                    this.data.splice(this.activeDataIndex,1)
+
+                    if (this.activeDataIndex> this.data.length - 1){
+                        this.activeDataIndex=this.data.length - 1
+                    }
+                },
+
+                removeImage: function(key,index){
+
+                    
+
+                    let useIndex = 0
+                    for (let d of this.data[this.activeDataIndex][key]){
+                        if (d.index==index){
+                            break
+                        }
+                        useIndex++
+                    }
+
+                    this.data[this.activeDataIndex][key].splice(useIndex,1)
+                    
+                },
+
+                recordPrevious: function(){
+                   Array.from(document.getElementsByClassName('textarea-resize')).forEach(s => s.blur())
+
+
+                    if (this.activeDataIndex != 0){
+                        this.activeDataIndex = this.activeDataIndex - 1
+                    }
+                    this.$nextTick(() => {
+                        this.resizeTextArea()
+                    })
+                    
+
+
+                },
+
+                recordNext: function(){
+                   Array.from(document.getElementsByClassName('textarea-resize')).forEach(s => s.blur())
+                    if (this.activeDataIndex != this.data.length-1){
+                        this.activeDataIndex = this.activeDataIndex + 1
+                    }
+                    this.$nextTick(() => {
+                        this.resizeTextArea()
+                    })
+                    
+
+                },
+
+                dataModelRemove: function(toRemove){
+
+                    this.modelKeys = this.modelKeys.filter((v) => { return (v==toRemove) ? false : true;})
+
+                    for (let d of this.data){
+                        if (d[toRemove]){
+                            delete d[toRemove]
+                        }
+                    }
+
+
+                },  
+
+
+                navDataElementSelected: function(dir){
+
+                    // find the current index
+
+                    let dataElementsHashes = this.modelKeys.map((v) => { return this.hashCode(v)})
+                    let i = dataElementsHashes.indexOf(this.activeDataElement)
+
+                    if (dir === 'up'){
+                        if (i > 0){
+                            this.activeDataElement = dataElementsHashes[i-1]
+                        }
+                    }
+
+                    if (dir === 'down'){
+                        // if we add one, does it go over the len?
+                        if (i + 1 <=  dataElementsHashes.length -1){
+                            this.activeDataElement = dataElementsHashes[i+1]
+                        }
+                    }
+
+                },
+
+
+                currentMode: function() {
+                    return this.mode
+                },
+
+
+
+                addValueText: function(value){
+                    console.log(this.activeDataElement)
+
+                    for (let key of this.modelKeys){
+                        if (this.hashCode(key) === this.activeDataElement){
+                            console.log(key,value)
+
+
+                            if (this.modelRegexRules[key]){
+                                for (let r of this.modelRegexRules[key]){
+                                    let regex = new RegExp(r.regex, r.extras)
+                                    console.log('before',value)
+                                    value = value.replace(regex,r.replaceWith)
+                                    console.log('after',value)
+
+                                }
+                            }
+
+
+                            if (!this.data[this.activeDataIndex][key]){
+                                this.data[this.activeDataIndex][key] = []
+                            }
+
+                            this.data[this.activeDataIndex][key].push({
+                                value: value,
+                                index: this.data[this.activeDataIndex][key].length + 1
+                            })
+                        }
+
+                    }
+
+                    this.$nextTick(() => {
+                        this.resizeTextArea()
+                    })
+                    
+
+
+
+                    
+
+                },
+
+                resizeTextArea: function(){
+
+                    console.log('H:ERE')
+
+                    for (let el of document.getElementsByClassName('textarea-resize')){
+                          el.style.height = "1px";
+                          el.style.height = (el.scrollHeight)+"px";
+
+
+                    }
+
+
+
+                },
+
+                manualChange: function(event,dataIndex,key,valueIndex){
+
+                    console.log(event,dataIndex,key,valueIndex)
+
+                    let useIndex = 0
+                    for (let d of this.data[dataIndex][key]){
+                        if (d.index == valueIndex){
+                            d.value = event.target.value
+                            break
+                        }
+                        useIndex++
+                    }
+
+                    console.log(this.data)
+
+
+                    if (event.target.value.trim()==''){
+                        this.data[dataIndex][key].splice(useIndex, 1)
+                    }
+
+
+
+                }
+
+
+            }, 
+            mounted: function(){
+
+
+                console.log("Heyyy", this.hashCode("TYEEEE"))
+                this.activeDataElement = this.hashCode('title')
+
+                window.setInterval(()=>{
+
+
+                    if (this.data.length>0 && this.modelKeys.length>0){
+
+                        window.localStorage.setItem('jsonModeDate',new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString())
+                        window.localStorage.setItem('jsonData', JSON.stringify(this.data))
+                        window.localStorage.setItem('jsonModelKeysBinary', JSON.stringify(this.modelKeysBinary))
+                        window.localStorage.setItem('jsonRegexRules', JSON.stringify(this.modelRegexRules))
+
+
+
+                    }
+
+
+                },20000)
+
+
+
+
+
+            }
+
+
+
+        }).mount('#app')
+
+
+
+
+
+
+        /////////////////////
+
+
+
+
+
+
+
+
+
+
+
+        let data;
+        let selection
+
+
+        function renderSelectBlocks(data){
+
+
+            var img = document.getElementById('the-image'); 
+            var imgHolder = document.getElementById('img-holder'); 
+
+
+            let xReduceBy = img.width / img.naturalWidth
+            let yReduceBy = img.height / img.naturalHeight
+
+            console.log(img.naturalWidth,img.width,xReduceBy,yReduceBy)
+
+
+
+            var paras = document.getElementsByClassName('selectable');
+            while(paras[0]) {
+                paras[0].parentNode.removeChild(paras[0]);
+            }
+
+            data.textAnnotations.shift()
+
+            data.textAnnotations.forEach((b)=>{
+
+
+                let top = b.boundingPoly.vertices[0].y
+                let left = b.boundingPoly.vertices[0].x
+                let width = b.boundingPoly.vertices[1].x - b.boundingPoly.vertices[0].x
+                let height = b.boundingPoly.vertices[2].y - b.boundingPoly.vertices[0].y
+
+                top = top * xReduceBy
+                width = width * xReduceBy
+                left = left * yReduceBy
+                height = height * yReduceBy
+
+                var text = document.createElement('div')
+
+                text.style.position = 'absolute'
+                text.style.background = 'tomato'
+
+                text.classList.add('selectable')
+                text.style.top = top + 'px'
+                text.style.left = left + 'px'
+                text.style.height = height + 'px'
+                text.style.width = width + 'px'
+
+                text.dataset.text = b.description
+
+                text.dataset.top = top
+                text.dataset.left = left
+
+                imgHolder.append(text);
+
+            })
+            console.log(img.naturalWidth,img.naturalHeight )
+
+            if (window.localStorage.getItem('selectop')){
+                let val = parseFloat(window.localStorage.getItem('selectop')) 
+                document.getElementById('selectop').value = val * 100
+                setBlockOpacity(val)
+            }
+
+            // img.remove();  
+
+            if (selection && selection.destroy){
+                selection.destroy()
+                selection = null
+            }
+            // selection = null
+
+            selection = Selection.create({
+
+                // Class for the selection-area
+                class: 'selection',
+
+                // All elements in this container can be selected
+                containers: ['.box-wrap'],
+
+                // The container is also the boundary in this case
+                boundaries: ['.box-wrap'],
+
+                onSelect(evt) {
+
+                    // Check if clicked element is already selected
+                    const selected = evt.target.classList.contains('selected-thing');
+
+                    // Remove class if the user isn't pressing the control key or ⌘ key and the
+                    // current target is already selected
+                    if (!evt.originalEvent.ctrlKey && !evt.originalEvent.metaKey) {
+
+                        // Remove class from every element that is selected
+                        evt.selectedElements.forEach(s => s.classList.remove('selected-thing'));
+
+                        // Clear previous selection
+                        this.clearSelection();
+                    }
+
+                    if (!selected) {
+
+                        // Select element
+                        evt.target.classList.add('selected-thing');
+                        this.keepSelection();
+                    } else {
+
+                        // Unselect element
+                        evt.target.classList.remove('selected-thing');
+                        this.removeFromSelection(evt.target);
+                    }
+                },
+
+                onStart({selectedElements, originalEvent}) {
+
+                    if (vueApp.currentMode() === 'text'){
+                        document.getElementById('text-area').blur()
+                    }else{
+
+                       Array.from(document.getElementsByClassName('textarea-resize')).forEach(s => s.blur())
+                       Array.from(document.getElementsByClassName('pls-blur')).forEach(s => s.blur())
+
+
+                    }
+
+                    // Remove class if the user isn't pressing the control key or ⌘ key
+                    if (!originalEvent.ctrlKey && !originalEvent.metaKey) {
+
+                        // Unselect all elements
+                        selectedElements.forEach(s => s.classList.remove('selected-thing'));
+
+                        // Clear previous selection
+                        this.clearSelection();
+                    }
+                },
+
+                onMove({selectedElements, changedElements}) {
+                    document.getElementById('the-image').classList.remove('selected-thing')
+
+                    // Add a custom class to the elements that where selected.
+                    selectedElements.forEach(s => s.classList.add('selected-thing'));
+
+                    // Remove the class from elements that where removed
+                    // since the last selection
+                    changedElements.removed.forEach(s => s.classList.remove('selected-thing'));
+                },
+
+                onStop(event) {
+                    
+                    this.keepSelection();
+                    // console.log('aaaa',event)
+                    document.getElementById('the-image').classList.remove('selected-thing')
+
+                    if (vueApp.returnPropertyIsBinary(vueApp.activeDataElement)){
+                        let xEnlargeBy = document.getElementById('the-image').naturalWidth / document.getElementById('the-image').width
+
+                        let yEnlargeBy = document.getElementById('the-image').naturalHeight / document.getElementById('the-image').height
+
+                        let x1 = event.selection._areaX1 
+                        let x2 = event.selection._areaX2 
+                        let y1 = event.selection._areaY1 + window.scrollY
+                        let y2 = event.selection._areaY2 + window.scrollY
+
+                        x1 = x1 * xEnlargeBy
+                        y1 = y1 * yEnlargeBy
+                        x2 = x2 * xEnlargeBy
+                        y2 = y2 * yEnlargeBy
+
+                        var newCanvas = document.createElement('canvas');
+                        let width = x2 - x1
+                        let height = y2 - y1
+
+                        newCanvas.width = width;
+                        newCanvas.height = height;
+
+                        // console.log('event.selection._areaX1 * xEnlargeBy',event.selection._areaX1 * xEnlargeBy)
+
+                        // console.log('xReduceBy',xReduceBy)
+                        // console.log('yReduceBy',yReduceBy)
+                        // console.log('xEnlargeBy',xEnlargeBy)
+                        // console.log('yEnlargeBy',yEnlargeBy)
+
+
+                        // console.log('x1',x1)
+                        // console.log('x2',x2)
+                        // console.log('y1',y1)
+                        // console.log('y2',y2)
+
+                        // console.log('width',width)
+                        // console.log('height',height)
+
+                        var newContext = newCanvas.getContext('2d');
+
+                        newContext.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+
+                        vueApp.addBinaryData(newCanvas.toDataURL())
+
+                    }
+
+                    
+
+
+                }
+            });
+
+
+
         }
 
 
 
-        var data = JSON.parse(this.responseText)
+        function switchSource(id, index){
 
-        var img = document.getElementById('the-image'); 
-        var imgHolder = document.getElementById('img-holder'); 
+            var img = document.getElementById('the-image'); 
 
-        let xReduceBy = img.width / img.naturalWidth
-        let yReduceBy = img.height / img.naturalHeight
+            img.setAttribute('src',`/image/${id}${index}.png`)
 
-        console.log(img.naturalWidth,img.width,xReduceBy,yReduceBy)
-        // imgHolder.style.height=img.naturalHeight +'px';
-        // imgHolder.style.width=img.naturalWidth+'px';
+            let interval
 
-        console.log(data)
-        // drop the first one
-        data.textAnnotations.shift()
-
-        data.textAnnotations.forEach((b)=>{
-
-
-            let top = b.boundingPoly.vertices[0].y
-            let left = b.boundingPoly.vertices[0].x
-            let width = b.boundingPoly.vertices[1].x - b.boundingPoly.vertices[0].x
-            let height = b.boundingPoly.vertices[2].y - b.boundingPoly.vertices[0].y
-
-            top = top * xReduceBy
-            width = width * xReduceBy
-            left = left * yReduceBy
-            height = height * yReduceBy
-
-            var text = document.createElement('div')
-
-            text.style.position = 'absolute'
-            text.style.background = 'tomato'
-
-            text.classList.add('selectable')
-            text.style.top = top + 'px'
-            text.style.left = left + 'px'
-            text.style.height = height + 'px'
-            text.style.width = width + 'px'
-
-            text.dataset.text = b.description
-
-            text.dataset.top = top
-            text.dataset.left = left
-
-            imgHolder.append(text);
-            // console.log(b,text)
-
-
-        })
-        console.log(img.naturalWidth,img.naturalHeight )
-
-        // img.remove();  
-
-        const selection = Selection.create({
-
-            // Class for the selection-area
-            class: 'selection',
-
-            // All elements in this container can be selected
-            containers: ['.box-wrap'],
-
-            // The container is also the boundary in this case
-            boundaries: ['.box-wrap'],
-
-            onSelect(evt) {
-
-                // Check if clicked element is already selected
-                const selected = evt.target.classList.contains('selected-thing');
-
-                // Remove class if the user isn't pressing the control key or ⌘ key and the
-                // current target is already selected
-                if (!evt.originalEvent.ctrlKey && !evt.originalEvent.metaKey) {
-
-                    // Remove class from every element that is selected
-                    evt.selectedElements.forEach(s => s.classList.remove('selected-thing'));
-
-                    // Clear previous selection
-                    this.clearSelection();
+            interval = window.setInterval(()=>{
+                if (img.complete){
+                    window.clearInterval(interval)
+                    renderSelectBlocks(data.pages[index])
                 }
 
-                if (!selected) {
+            },100)
 
-                    // Select element
-                    evt.target.classList.add('selected-thing');
-                    this.keepSelection();
-                } else {
+            
 
-                    // Unselect element
-                    evt.target.classList.remove('selected-thing');
-                    this.removeFromSelection(evt.target);
-                }
-            },
+        }
 
-            onStart({selectedElements, originalEvent}) {
 
-                document.getElementById('text-area').blur()
-                // Remove class if the user isn't pressing the control key or ⌘ key
-                if (!originalEvent.ctrlKey && !originalEvent.metaKey) {
+        function reqListener () {
 
-                    // Unselect all elements
-                    selectedElements.forEach(s => s.classList.remove('selected-thing'));
 
-                    // Clear previous selection
-                    this.clearSelection();
-                }
-            },
+            var hidden = false
 
-            onMove({selectedElements, changedElements}) {
-                document.getElementById('the-image').classList.remove('selected-thing')
-
-                // Add a custom class to the elements that where selected.
-                selectedElements.forEach(s => s.classList.add('selected-thing'));
-
-                // Remove the class from elements that where removed
-                // since the last selection
-                changedElements.removed.forEach(s => s.classList.remove('selected-thing'));
-            },
-
-            onStop() {
-                this.keepSelection();
-
-                document.getElementById('the-image').classList.remove('selected-thing')
+            // if there is something in the local storage add it to text area
+            if (window.localStorage.getItem('text') && document.getElementById('text-area')){
+              document.getElementById('text-area').value = window.localStorage.getItem('text')
             }
-        });
 
 
-        document.addEventListener('keydown', (event)=>{
 
-          if (event.key == 'Enter' || event.code == "Enter"){
+            data = JSON.parse(this.responseText)
 
-            if (document.activeElement.id != 'text-area'){
 
-                let selectedDom = []
+            if (data.multiMode){
 
-                for (el of document.getElementsByClassName('selected-thing')){
+                document.getElementById('pages-select-header').style.display='block'
 
-                  if (el.dataset.text){
-                    selectedDom.push({left:el.dataset.left,right:el.dataset.right,text:el.dataset.text})
-                  }
+                for (const [i, p] of data.files.entries()){
 
+                    let thumbImg = document.createElement('img')
+                    thumbImg.setAttribute('src',`/image/${ p.substring(0, 37) + 'thumbs-' + p.substring(37)  }`)
+                    thumbImg.dataset.id = p.substring(0, 37)
+                    thumbImg.dataset.index = i
+                    thumbImg.classList.add('page')
+
+                    thumbImg.addEventListener('click',(event)=>{
+                        switchSource(event.target.dataset.id, event.target.dataset.index)
+                        Array.from(document.getElementsByClassName('page-active')).forEach(s => s.classList.remove('page-active'))
+                        event.target.classList.add('page-active')
+
+                    })
+                    document.getElementById('pages-select').appendChild(thumbImg)
                 }
 
-                let text = selectedDom.map((t)=>{ return t.text})
+                switchSource(data.files[0].substring(0, 37),0)
+                document.getElementsByClassName('page')[0].classList.add('page-active')
 
-                text = text.join(' ').trim()
+            }else{
 
-
-                document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + text
-
-                let els = document.getElementsByClassName('selected-thing')
-
-
-                for (el of els){
-                    el.classList.add('selected-thing-added')
-                    // el.classList.remove('selected-thing')
-                }
+                renderSelectBlocks(data)
 
             }
 
 
-          }
-
-          if (event.key == 'Escape' || event.code == "Escape"){
 
 
-              console.log(hidden)
-              let els = document.getElementsByClassName('selectable')
-              if (hidden){
-                for (el of els){
-                  el.style.display = 'block'
+            
+
+            document.addEventListener('keydown', (event)=>{
+                console.log(event.key)
+                if (event.key == 'ArrowUp'){
+                    vueApp.navDataElementSelected('up')
+                    event.stopPropagation()
+                    event.preventDefault()
                 }
-                hidden = false
-              }else{
-                for (el of els){
-                  el.style.display = 'none'
+                if (event.key == 'ArrowDown'){
+                    vueApp.navDataElementSelected('down')
+                    event.stopPropagation()
+                    event.preventDefault()
                 }
-                hidden = true
+
+
+              if (event.key == '\\'){
+                if (vueApp.currentMode() != 'text'){
+
+                    if (document.activeElement && !document.activeElement.classList.contains('textarea-resize')){
+
+                        vueApp.addRecord()
+                    }
+
+                }
+              }
+
+
+              if (event.key == 'Enter' || event.code == "Enter"){
+
+                
+                if (document.activeElement.id != 'text-area'){
+
+                    let selectedDom = []
+
+                    for (el of document.getElementsByClassName('selected-thing')){
+
+                      if (el.dataset.text){
+                        selectedDom.push({left:el.dataset.left,right:el.dataset.right,text:el.dataset.text})
+                      }
+
+                    }
+
+                    let text = selectedDom.map((t)=>{ return t.text})
+
+                    text = text.join(' ').trim()
+
+                    if (vueApp.currentMode() === 'text'){
+                        
+                        document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + text
+                        document.getElementById("text-area").scrollTop = document.getElementById("text-area").scrollHeight 
+                    }else{
+
+                        if (!document.activeElement.classList.contains('textarea-resize')){
+                            vueApp.addValueText(text)
+                        }
+
+
+                    }
+
+
+                    let els = document.getElementsByClassName('selected-thing')
+                    for (el of els){
+                        el.classList.add('selected-thing-added')
+                        // el.classList.remove('selected-thing')
+                    }
+                    document.getElementById('clear-selected-button').style.display='inline-block'
+
+                }
+
+
+                
+
               }
 
 
 
-          }
+
+              if (event.key == 'Escape' || event.code == "Escape"){
+                  let els = document.getElementsByClassName('selectable')
+                  if (hidden){
+                    for (el of els){
+                      el.style.display = 'block'
+                    }
+                    hidden = false
+                  }else{
+                    for (el of els){
+                      el.style.display = 'none'
+                    }
+                    hidden = true
+                  }
+              }
+
+            })
 
 
-        })
-
-
-
-        document.getElementById('download').addEventListener('click', (event)=>{
-          var content = document.getElementById('text-area').value
-          // any kind of extension (.txt,.cpp,.cs,.bat)
-          var filename =  data.filename +  ".txt";
-
-          var blob = new Blob([content], {
-          type: "text/plain;charset=utf-8"
-          });
-
-          saveAs(blob, filename);
-
-
-          window.localStorage.setItem('text','')
-
-
-        })
-        document.getElementById('new-page').addEventListener('click', (event)=>{
-         
-         document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + '[PAGE BREAK]'
-         window.localStorage.setItem('text',document.getElementById('text-area').value)
-         window.location = "/"
-
-
-        })
-
-
-
-
-
-
-
+            bindTextModeButtons()
 
 
     }
@@ -518,6 +1551,141 @@ Download will save text as file.
     oReq.addEventListener("load", reqListener);
     oReq.open("GET", "/meta/<%=id%>");
     oReq.send();
+
+
+    function bindTextModeButtons(){
+
+        if (document.getElementById('text-area')){
+
+            document.getElementById('download').addEventListener('click', (event)=>{
+              var content = document.getElementById('text-area').value
+              // any kind of extension (.txt,.cpp,.cs,.bat)
+              var filename =  data.filename +  ".txt";
+
+              var blob = new Blob([content], {
+                type: "text/plain;charset=utf-8"
+              });
+              saveAs(blob, filename);
+              window.localStorage.setItem('text','')
+            })
+            document.getElementById('new-page').addEventListener('click', (event)=>{             
+             document.getElementById('text-area').value = document.getElementById('text-area').value + '\n\n' + '[PAGE BREAK]'
+             window.localStorage.setItem('text',document.getElementById('text-area').value)
+             window.location = "/"
+
+
+            })
+
+        }
+
+
+    }
+
+
+
+    function setBlockOpacity(decimal){
+
+        for (let el of document.getElementsByClassName('selectable')){
+            el.style.opacity = decimal
+        }
+
+    }
+    function clearSelectedAdded(){
+        // let els = document.getElementsByClassName('selected-thing-added')
+        // for (el of els){
+        //     el.classList.remove('selected-thing-added')            
+        // }
+        
+        Array.from(document.querySelectorAll('.selected-thing-added')).forEach((el) => el.classList.remove('selected-thing-added'));
+        document.getElementById('clear-selected-button').blur()
+
+    }
+
+    document.getElementById('clear-selected-button').addEventListener('click',()=>{
+        clearSelectedAdded();
+
+    })
+
+
+
+    //
+    
+    document.getElementById('tool-tip-toggle').addEventListener('change',(event)=>{
+        
+        if (event.target.checked){
+
+            // document.querySelectorAll('[data-tip]]')
+
+
+            Array.from(document.querySelectorAll('[data-tipoff]')).forEach((el) => {
+                el.dataset.tip = el.dataset.tipoff
+                delete el.dataset.tipoff
+            });
+
+        }else{
+            Array.from(document.querySelectorAll('[data-tip]')).forEach((el) => {
+                el.dataset.tipoff = el.dataset.tip
+                delete el.dataset.tip
+            });
+
+
+        }
+
+    })
+
+    document.getElementById('selectop').addEventListener('input', function(event){
+        setBlockOpacity(parseInt(event.target.value) / 100)
+        window.localStorage.setItem('selectop',parseInt(event.target.value) / 100)
+    })
+
+
+    let resizeTimer = null
+
+    window.addEventListener("resize", function(){
+
+        document.getElementById('window-resize').style.display='block'
+        window.clearTimeout(resizeTimer)
+
+        resizeTimer = window.setTimeout(function(){
+
+
+
+            if (vueApp.currentMode() != 'text'){
+                
+                Array.from(document.querySelectorAll('.page')).forEach((el) => {
+                    
+                    if (el.classList.contains('page-active')){
+                        switchSource(el.dataset.id, el.dataset.index)
+                    }
+
+
+                });
+
+
+                if (Array.from(document.querySelectorAll('.page')).length == 0){
+                    renderSelectBlocks(data)
+                }
+
+            }else{
+
+                window.localStorage.setItem('text',document.getElementById('text-area').value)
+                location.reload()
+
+            }
+
+
+            console.log("finer")
+            document.getElementById('window-resize').style.display='none'
+
+
+
+
+
+        },2000)
+
+
+    });
+
 
 
 

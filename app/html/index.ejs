@@ -9,9 +9,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="/html/css/bulma.min.css" >
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/html/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/html/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/html/img/favicon-16x16.png">
+  <link rel="manifest" href="/html/img/site.webmanifest">
+
   <!-- Place favicon.ico in the root directory -->
+
+
+
     <style type="text/css">
       body{
         font-family: sans-serif;
@@ -38,17 +46,26 @@
       <h1>Pomodoro</h1></div>
 
       <div style="text-align:  center;"> 
-        <div style="margin-bottom: 1em;">Upload image file to OCR</div>
+        <div style="margin-bottom: 1em;">Upload image file or PDF to OCR</div>
         <form ref='uploadForm' 
           id='uploadForm' 
           action='/upload' 
           method='post' 
           encType="multipart/form-data">
-            <input type="file" name="file" accept=".png,.jpg,.tif,.gif,.bmp" />
+            <input type="file" name="file" accept=".png,.jpg,.tif,.gif,.bmp,.pdf" />
             <input type='submit' value='Upload!' />
         </form>   
       </div>
 
+      <div style="text-align: center;">
+        <form ref='uploadFormExample' 
+          id='uploadFormExample' 
+          action='/upload?example=true' 
+          method='post'>
+            <input type="submit" value="Try it out using an example file" style="background: transparent;border: none;text-decoration: underline; cursor: pointer; margin-top:1em" />
+
+        </form>  
+      </div>
 
       <div style="padding-top: 2em;">
         <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/jqu0MEyK82U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -56,6 +73,9 @@
 
       </div>
     </div>
+
+
+    <div style="text-align: center; margin-top: 5em; font-style: italic;">Data Policy: Any file uploaded to this service is deleted after 5 days and not used for any other purpose.<br>This service does make use of Google API for OCR which has a <a href="https://cloud.google.com/vision/docs/data-usage">data policy</a> as well.</div>
 
 
 
