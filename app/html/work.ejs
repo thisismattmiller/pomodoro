@@ -705,7 +705,7 @@ main section.demo .info p {
                         alert("Sorry, javascript said that is an invalid regex")
                     }
 
-                    if (!replaceWith){
+                    if (replaceWith===null){
                         return false
                     }
                     console.log(this.modelRegexRules)
