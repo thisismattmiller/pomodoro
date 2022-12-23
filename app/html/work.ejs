@@ -563,7 +563,7 @@ main section.demo .info p {
                     <ul style="padding: 1em;">
                         <li v-for="v in modelKeys" :key="v">
                             <div style="display: flex;">
-                                <div style="flex:1" :class="{ activeDataElement: (hashCode(v)===activeDataElement) }"><button @click="activeDataElement = hashCode(v)" data-tipoff="Add data to this property. Keyboard Shortcut: Up and Down Arrow Keys" style="color:black">{{v}}</button></div>
+                                <div style="flex:1" :class="{ activeDataElement: (hashCode(v)===activeDataElement) }"><button class="pls-blur" @click="activeDataElement = hashCode(v)" data-tipoff="Add data to this property. Keyboard Shortcut: Up and Down Arrow Keys" style="color:black">{{v}}</button></div>
                                 <div style="flex:5">
 
                                     <template v-if="data[activeDataIndex][v]">
@@ -1456,11 +1456,13 @@ main section.demo .info p {
             document.addEventListener('keydown', (event)=>{
                 console.log(event.key)
                 if (event.key == 'ArrowUp'){
+                    Array.from(document.getElementsByClassName('pls-blur')).forEach(s => s.blur())
                     vueApp.navDataElementSelected('up')
                     event.stopPropagation()
                     event.preventDefault()
                 }
                 if (event.key == 'ArrowDown'){
+                    Array.from(document.getElementsByClassName('pls-blur')).forEach(s => s.blur())
                     vueApp.navDataElementSelected('down')
                     event.stopPropagation()
                     event.preventDefault()
