@@ -471,7 +471,7 @@ main section.demo .info p {
                                      <path d="m76.047 50 21.176-21.176c0.75781-0.75391 1.1719-1.7539 1.1719-2.8164s-0.41797-2.0664-1.168-2.8164l-20.418-20.418c-1.5039-1.5-4.125-1.5039-5.6328 0l-21.176 21.18-21.18-21.176c-1.5508-1.5547-4.0781-1.5547-5.6328 0l-20.41 20.414c-1.5547 1.5547-1.5547 4.0781 0 5.6328l21.176 21.176-21.176 21.176c-0.75391 0.75391-1.168 1.7539-1.168 2.8164s0.41797 2.0625 1.168 2.8203l20.414 20.41c0.75391 0.75781 1.7539 1.1719 2.8164 1.1719s2.0664-0.41797 2.8164-1.168l21.176-21.18 21.176 21.176c0.75 0.75391 1.75 1.1719 2.8125 1.1719h0.003907c1.0625 0 2.0625-0.41797 2.8203-1.168l20.414-20.414c0.75391-0.75781 1.168-1.7578 1.168-2.8242 0-1.0625-0.42188-2.0625-1.168-2.8125z"/>
                                     </svg>
                                 </button>
-                                <input type="checkbox" :id="v+'img'" style="margin-left:0.5em" @change="togglePropertyIsBinary(v)" :name="v+'img'" /> 
+                                <input type="checkbox" :id="v+'img'" style="margin-left:0.5em" @change="togglePropertyIsBinary(v)" :checked="returnPropertyIsBinary(v)" :name="v+'img'" /> 
                                 <label data-tipoff="Toggle this property to store IMAGE section of the document, base64 encoded in the JSON file, see the help video for more info" style="cursor: pointer;" :for="v+'img'">
                                     
                                     <svg width="20px" height="20px" version="1.1" viewBox="0 -15 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -886,6 +886,7 @@ main section.demo .info p {
                     }
 
 
+
                 },
 
                 addBinaryData: function(value){
@@ -910,7 +911,7 @@ main section.demo .info p {
                 },
 
                 returnPropertyIsBinary: function(key){
-
+                    
                     if(isNaN(key)){
                         if (this.modelKeysBinary[key]){
                             return true
@@ -919,6 +920,9 @@ main section.demo .info p {
                         }                   
                     }else{
                         let k = this.modelKeys.filter((v) => { return (this.hashCode(v) == key) ? true : false  })
+                        
+                        
+                        
                         if (this.modelKeysBinary[k[0]]){
                             return true
                         }else{
@@ -1039,19 +1043,19 @@ main section.demo .info p {
 
 
                 addValueText: function(value){
-                    console.log(this.activeDataElement)
+                    
 
                     for (let key of this.modelKeys){
                         if (this.hashCode(key) === this.activeDataElement){
-                            console.log(key,value)
+                            
 
 
                             if (this.modelRegexRules[key]){
                                 for (let r of this.modelRegexRules[key]){
                                     let regex = new RegExp(r.regex, r.extras)
-                                    console.log('before',value)
+                                    
                                     value = value.replace(regex,r.replaceWith)
-                                    console.log('after',value)
+                                    
 
                                 }
                             }
@@ -1082,7 +1086,7 @@ main section.demo .info p {
 
                 resizeTextArea: function(){
 
-                    console.log('H:ERE')
+                    
 
                     for (let el of document.getElementsByClassName('textarea-resize')){
                           el.style.height = "1px";
@@ -1097,7 +1101,7 @@ main section.demo .info p {
 
                 manualChange: function(event,dataIndex,key,valueIndex){
 
-                    console.log(event,dataIndex,key,valueIndex)
+                    
 
                     let useIndex = 0
                     for (let d of this.data[dataIndex][key]){
@@ -1108,7 +1112,7 @@ main section.demo .info p {
                         useIndex++
                     }
 
-                    console.log(this.data)
+                    
 
 
                     if (event.target.value.trim()==''){
@@ -1124,7 +1128,7 @@ main section.demo .info p {
             mounted: function(){
 
 
-                console.log("Heyyy", this.hashCode("TYEEEE"))
+                
                 this.activeDataElement = this.hashCode('title')
 
                 window.setInterval(()=>{
@@ -1185,7 +1189,7 @@ main section.demo .info p {
             let xReduceBy = img.width / img.naturalWidth
             let yReduceBy = img.height / img.naturalHeight
 
-            console.log(img.naturalWidth,img.width,xReduceBy,yReduceBy)
+            
 
 
 
@@ -1228,7 +1232,7 @@ main section.demo .info p {
                 imgHolder.append(text);
 
             })
-            console.log(img.naturalWidth,img.naturalHeight )
+            
 
             if (window.localStorage.getItem('selectop')){
                 let val = parseFloat(window.localStorage.getItem('selectop')) 
@@ -1324,7 +1328,9 @@ main section.demo .info p {
                     // console.log('aaaa',event)
                     document.getElementById('the-image').classList.remove('selected-thing')
 
+                    
                     if (vueApp.returnPropertyIsBinary(vueApp.activeDataElement)){
+
                         let xEnlargeBy = document.getElementById('the-image').naturalWidth / document.getElementById('the-image').width
 
                         let yEnlargeBy = document.getElementById('the-image').naturalHeight / document.getElementById('the-image').height
