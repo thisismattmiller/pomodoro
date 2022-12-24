@@ -215,7 +215,10 @@ app.post('/upload', function(req, res) {
 	    	await delay(2000);
 	    	// try to split it apart
 
-	    	const convert = spawnSync( 'convert', [ '-density', '140', '-quality', '100', filename, filename + '.png' ] );
+	    	const convert = spawnSync( 'convert', [ '-density', '140', '-quality', '100', filename, filename + '.png' ], { encoding: 'utf-8' } );
+	    	console.log('convert.stdout',convert.stdout)
+	    	console.log('convert.stderr',convert.stderr)
+
 
 	    	glob(`${filename}-*.png`, {}, async function (er, files) {
 
