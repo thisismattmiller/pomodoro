@@ -11,6 +11,10 @@
   
   <script src="/html/js/selection.min.js"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="/html/js/Sortable.min.js"></script>
+  <script src="/html/js/vuedraggable.umd.min.js"></script>
+
+
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/html/img/apple-touch-icon.png">
@@ -47,7 +51,7 @@
 
 html,
 body {
-    height: 100%;
+    height: 110%;
 }
 
 body {
@@ -427,6 +431,37 @@ main section.demo .info p {
     border: solid 1px black;
 }
 
+#throwshade{
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top:0;
+    background-color: rgba(0, 0, 0, 0.50);
+}
+#reorder-box{
+    position: fixed;
+    z-index: 1000;
+    width: 25%;
+    height: 50%;
+    left: 35%;
+    border: solid 1px gray;
+    background-color: whitesmoke;
+
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    padding: 1em;
+
+}
+
+.draggable{
+    padding: 0.25em;
+    border: dashed 1px #9e9e9e;
+    cursor: grab;    
+
+}
+
+
   </style>
 
 </head>
@@ -449,6 +484,27 @@ main section.demo .info p {
 
 
         <div id="app">
+
+            <div id="throwshade" v-if="reorder==true">
+                
+            </div>
+
+            <div id="reorder-box" v-if="reorder==true">
+                <div>
+                    Drag the items below to reorder
+                </div>     
+                <draggable 
+                  v-model="modelKeys" 
+                  @start="drag=true" 
+                  @end="drag=false" 
+                  item-key="id">
+                  <template #item="{element}">
+                    <div class="draggable">{{element}}</div>
+                   </template>
+                </draggable>
+
+                <button @click="toggleReorder()">Done</button>
+            </div>
                 
             <div id="mode-holder">
             <button :class="{'button-mode-active': (mode==='json'), 'pls-blur': true}" @click="toggleMode('json')">JSON Mode (new✨)</button>
@@ -502,6 +558,21 @@ main section.demo .info p {
 
 
                         </button>
+                        <button v-if="modelKeys.length>0" title="Change the order of the properties" style="margin-left:2em" class="pls-blur" data-tipoff="Change the order of the properties" @click="toggleReorder">
+
+                            <svg width="18px" height="18px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                             <g>
+                              <path d="m15 64.398h-8.3984c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.1992 1.8008 4.1016 4.1016 4.1016h8.3984c9.3984 0 18.398-4 24.699-10.801l-4.8008-6.8008c-4.8984 5.8984-12.199 9.3984-19.898 9.3984z"/>
+                              <path d="m72.102 35.602h6.5v7c0 1.8984 2.1992 2.8984 3.6016 1.8008l14.398-11.102c1.1992-0.89844 1.1992-2.6992 0-3.6016l-14.398-11c-1.5-1.1016-3.6016-0.10156-3.6016 1.8008v7h-6.5c-9.3984 0-18.398 4-24.699 10.801l4.8984 6.8008c4.8008-6 12.098-9.5 19.801-9.5z"/>
+                              <path d="m96.602 66.699-14.398-11c-1.5-1.1016-3.6992-0.10156-3.6992 1.8008v7h-6.5c-8.1992 0-16-4-20.801-10.699l-8.8008-12.301c-6.3008-8.8008-16.602-14-27.398-14h-8.4023c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.3008 1.8008 4.1016 4.1016 4.1016l8.3984-0.003906c8.1992 0 16 4 20.801 10.699l8.8008 12.301c6.3008 8.8008 16.602 14 27.398 14h6.5v7c0 1.8984 2.1992 2.8984 3.6992 1.8008l14.398-11c1.2031-1.1016 1.2031-2.8984 0.003906-3.8008z"/>
+                             </g>
+                            </svg>
+
+
+                        </button>
+                        <input v-if="modelKeys.length>0" type="checkbox" id="automove" data-tipoff="Automatically move to the next property after text is added when entering data" title="Automatically move to the next property after text is added when entering data" style="margin-left:1em" name="automove" v-model="autoMove"><label style="margin-left: 0.2em; cursor: pointer;" for="automove" title="Automatically move to the next property after text is added when entering data">Auto-Move</label>
+
+
                     </div>
                     <div id="restore-session"  style="text-align: right; flex:1">
                             
@@ -545,6 +616,8 @@ main section.demo .info p {
                 <button data-tipoff="Download All Records" @click="download" class="pls-blur" style="padding: 0 0.20em 0 0.20em; color: white; margin-left:2em; background-color: black;">
                    Download All
                 </button>
+
+                
 
             </div>
         </div>
@@ -659,7 +732,8 @@ main section.demo .info p {
 
 
         const { createApp } = Vue
-
+        
+        const draggable = vuedraggable
 
 
         let vueApp = createApp({
@@ -668,15 +742,20 @@ main section.demo .info p {
                     
                     mode: 'text',
                     modelKeys: [],
+                    
                     modelKeysBinary: {},
                     data: [{}],
                     modelRegexRules: {},
                     activeDataElement: 0,
                     activeDataIndex: 0,
                     askedToRestore: false,
-
+                    reorder:false,
+                    autoMove:true,
 
                 }
+            },
+            components: {
+                draggable
             },
 
             methods:{
@@ -685,6 +764,15 @@ main section.demo .info p {
 
                 removeRegex:function(key){
                     delete this.modelRegexRules[key]
+                },
+
+                toggleReorder: function(){
+                    if (this.reorder){
+                        this.reorder=false
+                    }else{
+                        this.reorder=true
+                    }
+
                 },
 
                 addRegex: function(key){
@@ -1069,6 +1157,11 @@ main section.demo .info p {
                                 value: value,
                                 index: this.data[this.activeDataIndex][key].length + 1
                             })
+                            if (this.autoMove){
+                                console.log("yeeet")
+                                this.navDataElementSelected('down')
+                                break
+                            }
                         }
 
                     }
