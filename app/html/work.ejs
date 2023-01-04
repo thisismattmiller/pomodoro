@@ -462,6 +462,34 @@ main section.demo .info p {
 }
 
 
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    animation-iteration-count:1;
+    -webkit-animation-iteration-count:1;
+}
+
+@-webkit-keyframes tada { 
+    0% {-webkit-transform: scale(1);} 
+    10%, 20% {-webkit-transform: scale(0.9) rotate(-3deg);} 
+    30%, 50%, 70%, 90% {-webkit-transform: scale(1.1) rotate(3deg);} 
+    40%, 60%, 80% {-webkit-transform: scale(1.1) rotate(-3deg);} 
+    100% {-webkit-transform: scale(1) rotate(0);} 
+} 
+@keyframes tada { 
+    0% {transform: scale(1);} 
+    10%, 20% {transform: scale(0.9) rotate(-3deg);} 
+    30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);} 
+    40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);} 
+    100% {transform: scale(1) rotate(0);} 
+} 
+.tada { 
+    -webkit-animation-name: tada; 
+    animation-name: tada; 
+}
+
   </style>
 
 </head>
@@ -513,12 +541,15 @@ main section.demo .info p {
 
             <div v-if="mode=='json'" id="structure-mode">
                 
-                Data Model:
-                <div style="display: flex;">
+                <span>Data Model:</span>
+                <button v-if="showDataModel==true" style="float: right;" @click="showDataModel=false">hide</button>
+                <button v-if="showDataModel==false" style="float: right;" @click="showDataModel=true">show</button>
+
+                <div style="display: flex;" v-if="showDataModel==true">
 
                     <div style="flex:1">
 
-                        <div v-if="modelKeys.length == 0" style="font-size: 0.8em;">No properties defined<br>add with the plus icon</div>
+                        <div v-if="modelKeys.length == 0" style="font-size: 0.8em; padding-left:2em">No properties defined<br>add some with the plus icon</div>
                         <ul id="data-model-list">
                             <li v-for="v in modelKeys" :key="v">
                                 <span>{{v}}</span>
@@ -543,46 +574,49 @@ main section.demo .info p {
                             
 
                         </ul>
-                        <button class="pls-blur" data-tipoff="Add property" @click="dataModelAdd"> 
-                            
+
+                        <div style="background-color:whitesmoke; padding:0.1em; border: solid 1px gray;border-bottom: none;width: 19em;padding-left: 1em;">
+                            <button class="pls-blur" data-tipoff="Add property" @click="dataModelAdd"> 
+                                
 
 
 
 
-                            <svg class="shadow" width="15px" height="15px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                             <path d="m97.617 40.078h-35.703c-1.0938 0-1.9922-0.87891-1.9922-1.9922v-35.703c0-1.0938-0.87891-1.9922-1.9922-1.9922h-15.879c-1.0938 0-1.9922 0.87891-1.9922 1.9922v35.703c0 1.0938-0.87891 1.9922-1.9922 1.9922h-35.684c-1.0938 0-1.9922 0.87891-1.9922 1.9922v15.879c0 1.0938 0.87891 1.9922 1.9922 1.9922h35.703c1.0938 0 1.9922 0.87891 1.9922 1.9922v35.723c0 1.0938 0.87891 1.9922 1.9922 1.9922h15.879c1.0938 0 1.9922-0.87891 1.9922-1.9922v-35.742c0-1.0938 0.87891-1.9922 1.9922-1.9922h35.723c1.0938 0 1.9922-0.87891 1.9922-1.9922v-15.879c-0.039063-1.0938-0.91797-1.9727-2.0312-1.9727z"/>
-                            </svg>
+                                <svg class="shadow" width="15px" height="15px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="m97.617 40.078h-35.703c-1.0938 0-1.9922-0.87891-1.9922-1.9922v-35.703c0-1.0938-0.87891-1.9922-1.9922-1.9922h-15.879c-1.0938 0-1.9922 0.87891-1.9922 1.9922v35.703c0 1.0938-0.87891 1.9922-1.9922 1.9922h-35.684c-1.0938 0-1.9922 0.87891-1.9922 1.9922v15.879c0 1.0938 0.87891 1.9922 1.9922 1.9922h35.703c1.0938 0 1.9922 0.87891 1.9922 1.9922v35.723c0 1.0938 0.87891 1.9922 1.9922 1.9922h15.879c1.0938 0 1.9922-0.87891 1.9922-1.9922v-35.742c0-1.0938 0.87891-1.9922 1.9922-1.9922h35.723c1.0938 0 1.9922-0.87891 1.9922-1.9922v-15.879c-0.039063-1.0938-0.91797-1.9727-2.0312-1.9727z"/>
+                                </svg>
 
 
 
 
 
-                        </button>
-                        <button v-if="modelKeys.length>0" title="Change the order of the properties" style="margin-left:2em" class="pls-blur" data-tipoff="Change the order of the properties" @click="toggleReorder">
+                            </button>
+                            <button v-if="modelKeys.length>0" title="Change the order of the properties" style="margin-left:2em" class="pls-blur" data-tipoff="Change the order of the properties" @click="toggleReorder">
 
-                            <svg width="18px" height="18px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                             <g>
-                              <path d="m15 64.398h-8.3984c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.1992 1.8008 4.1016 4.1016 4.1016h8.3984c9.3984 0 18.398-4 24.699-10.801l-4.8008-6.8008c-4.8984 5.8984-12.199 9.3984-19.898 9.3984z"/>
-                              <path d="m72.102 35.602h6.5v7c0 1.8984 2.1992 2.8984 3.6016 1.8008l14.398-11.102c1.1992-0.89844 1.1992-2.6992 0-3.6016l-14.398-11c-1.5-1.1016-3.6016-0.10156-3.6016 1.8008v7h-6.5c-9.3984 0-18.398 4-24.699 10.801l4.8984 6.8008c4.8008-6 12.098-9.5 19.801-9.5z"/>
-                              <path d="m96.602 66.699-14.398-11c-1.5-1.1016-3.6992-0.10156-3.6992 1.8008v7h-6.5c-8.1992 0-16-4-20.801-10.699l-8.8008-12.301c-6.3008-8.8008-16.602-14-27.398-14h-8.4023c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.3008 1.8008 4.1016 4.1016 4.1016l8.3984-0.003906c8.1992 0 16 4 20.801 10.699l8.8008 12.301c6.3008 8.8008 16.602 14 27.398 14h6.5v7c0 1.8984 2.1992 2.8984 3.6992 1.8008l14.398-11c1.2031-1.1016 1.2031-2.8984 0.003906-3.8008z"/>
-                             </g>
-                            </svg>
+                                <svg width="18px" height="18px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                 <g>
+                                  <path d="m15 64.398h-8.3984c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.1992 1.8008 4.1016 4.1016 4.1016h8.3984c9.3984 0 18.398-4 24.699-10.801l-4.8008-6.8008c-4.8984 5.8984-12.199 9.3984-19.898 9.3984z"/>
+                                  <path d="m72.102 35.602h6.5v7c0 1.8984 2.1992 2.8984 3.6016 1.8008l14.398-11.102c1.1992-0.89844 1.1992-2.6992 0-3.6016l-14.398-11c-1.5-1.1016-3.6016-0.10156-3.6016 1.8008v7h-6.5c-9.3984 0-18.398 4-24.699 10.801l4.8984 6.8008c4.8008-6 12.098-9.5 19.801-9.5z"/>
+                                  <path d="m96.602 66.699-14.398-11c-1.5-1.1016-3.6992-0.10156-3.6992 1.8008v7h-6.5c-8.1992 0-16-4-20.801-10.699l-8.8008-12.301c-6.3008-8.8008-16.602-14-27.398-14h-8.4023c-2.1992 0-4.1016 1.8008-4.1016 4.1016 0 2.3008 1.8008 4.1016 4.1016 4.1016l8.3984-0.003906c8.1992 0 16 4 20.801 10.699l8.8008 12.301c6.3008 8.8008 16.602 14 27.398 14h6.5v7c0 1.8984 2.1992 2.8984 3.6992 1.8008l14.398-11c1.2031-1.1016 1.2031-2.8984 0.003906-3.8008z"/>
+                                 </g>
+                                </svg>
 
 
-                        </button>
-                        <input v-if="modelKeys.length>0" type="checkbox" id="automove" data-tipoff="Automatically move to the next property after text is added when entering data" title="Automatically move to the next property after text is added when entering data" style="margin-left:1em" name="automove" v-model="autoMove"><label style="margin-left: 0.2em; cursor: pointer;" for="automove" title="Automatically move to the next property after text is added when entering data">Auto-Move</label>
-
+                            </button>
+                            <input v-if="modelKeys.length>0" type="checkbox" id="automove" data-tipoff="Automatically move to the next property after text is added when entering data" title="Automatically move to the next property after text is added when entering data" style="margin-left:2em" name="automove" v-model="autoMove"><label v-if="modelKeys.length>0" style="margin-left: 0.2em; cursor: pointer; font-size: 0.75em; position: relative; top: -2px;" for="automove" title="Automatically move to the next property after text is added when entering data">Auto-Next</label>
+                            <input v-if="modelKeys.length>0" type="checkbox" id="autoreset" data-tipoff="Automatically move to the first property when starting a new record" title="Automatically move to the first property when starting a new record" style="margin-left:2em" name="autoreset" v-model="autoReset"><label v-if="modelKeys.length>0" style="margin-left: 0.2em; cursor: pointer; font-size: 0.75em; position: relative; top: -2px;" for="autoreset" title="Automatically move to the first property when starting a new record">Auto-Reset</label>
+                        </div>
 
                     </div>
                     <div id="restore-session"  style="text-align: right; flex:1">
                             
                         <template v-if="hasSessionData() !== false && askedToRestore !== true">
                             
-                            
-                            <span style="font-size:0.8em">Restore data from previous session? ({{hasSessionData()}})</span>
-                            <button @click="restoreSession(true)">yes</button>
-                            <button @click="restoreSession(false)">no</button>
-
+                            <div class="tada animated" style="background-color:gold; padding:0.5em">
+                                <span style="font-size:0.8em">Restore data from previous session? ({{hasSessionData()}})</span>
+                                <button @click="restoreSession(true)">yes</button>
+                                <button @click="restoreSession(false)">no</button>
+                            </div>
 
                         </template>
 
@@ -610,7 +644,7 @@ main section.demo .info p {
                 <button data-tipoff="Create new record, keyboard shortcut: '\' (backsash or pipe key)" @click="addRecord" title="Use the '\' (backward slash or pipe key) to add a new record via keyboard shortcut" class="pls-blur" style="background-color: black; color: white; padding: 0 0.20em 0 0.20em;">
                    Add Record
                 </button>
-                <button data-tipoff="Remove this record" @click="removeRecord" class="pls-blur" style="background-color: #830000; padding: 0 0.20em 0 0.20em; color: white; margin-left:2em">
+                <button data-tipoff="Remove this record" @click="removeRecord" class="pls-blur" style="background-color: tomato; padding: 0 0.20em 0 0.20em; color: white; margin-left:2em">
                    Remove Record
                 </button>
                 <button data-tipoff="Download All Records" @click="download" class="pls-blur" style="padding: 0 0.20em 0 0.20em; color: white; margin-left:2em; background-color: black;">
@@ -751,6 +785,8 @@ main section.demo .info p {
                     askedToRestore: false,
                     reorder:false,
                     autoMove:false,
+                    showDataModel: true,
+                    autoReset: false,
 
                 }
             },
@@ -897,6 +933,14 @@ main section.demo .info p {
 
                         this.askedToRestore=true
 
+                        this.$nextTick(() => {
+
+                            let dataElementsHashes = this.modelKeys.map((v) => { return this.hashCode(v)})
+                            if (dataElementsHashes.length>0){
+                                this.activeDataElement = dataElementsHashes[0]
+                            }
+                        })
+
                     }else{
                         this.askedToRestore=true
                     }
@@ -1031,6 +1075,11 @@ main section.demo .info p {
 
                     this.data.push(x)
                     this.activeDataIndex = this.data.length - 1
+
+                    if (this.autoReset){
+                        let dataElementsHashes = this.modelKeys.map((v) => { return this.hashCode(v)})                        
+                        this.activeDataElement = dataElementsHashes[0]
+                    }
 
                 },
 
