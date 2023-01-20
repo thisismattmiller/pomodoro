@@ -1476,7 +1476,7 @@ main section.demo .info p {
                         let xEnlargeBy = document.getElementById('the-image').naturalWidth / document.getElementById('the-image').width
 
                         let yEnlargeBy = document.getElementById('the-image').naturalHeight / document.getElementById('the-image').height
-
+                        console.log(event.selection)
                         let x1 = event.selection._areaX1 
                         let x2 = event.selection._areaX2 
                         let y1 = event.selection._areaY1 + window.scrollY
@@ -1487,12 +1487,8 @@ main section.demo .info p {
                         x2 = x2 * xEnlargeBy
                         y2 = y2 * yEnlargeBy
 
-                        var newCanvas = document.createElement('canvas');
                         let width = x2 - x1
                         let height = y2 - y1
-
-                        newCanvas.width = width;
-                        newCanvas.height = height;
 
                         // console.log('event.selection._areaX1 * xEnlargeBy',event.selection._areaX1 * xEnlargeBy)
 
@@ -1509,6 +1505,51 @@ main section.demo .info p {
 
                         // console.log('width',width)
                         // console.log('height',height)
+
+
+                        if (width < 0 && height < 0){
+                            x1 = event.selection._areaX2 
+                            x2 = event.selection._areaX1 
+                            y1 = event.selection._areaY2 + window.scrollY
+                            y2 = event.selection._areaY1 + window.scrollY
+                            x1 = x1 * xEnlargeBy
+                            y1 = y1 * yEnlargeBy
+                            x2 = x2 * xEnlargeBy
+                            y2 = y2 * yEnlargeBy
+                            width = x2 - x1
+                            height = y2 - y1
+                        }else if (width < 0 && height > 0){
+                            x1 = event.selection._areaX2 
+                            x2 = event.selection._areaX1 
+                            y1 = event.selection._areaY1 + window.scrollY
+                            y2 = event.selection._areaY2 + window.scrollY
+                            x1 = x1 * xEnlargeBy
+                            y1 = y1 * yEnlargeBy
+                            x2 = x2 * xEnlargeBy
+                            y2 = y2 * yEnlargeBy
+                            width = x2 - x1
+                            height = y2 - y1
+                        }else if (width > 0 && height < 0){
+                            x1 = event.selection._areaX1 
+                            x2 = event.selection._areaX2 
+                            y1 = event.selection._areaY2 + window.scrollY
+                            y2 = event.selection._areaY1 + window.scrollY
+                            x1 = x1 * xEnlargeBy
+                            y1 = y1 * yEnlargeBy
+                            x2 = x2 * xEnlargeBy
+                            y2 = y2 * yEnlargeBy
+                            width = x2 - x1
+                            height = y2 - y1
+                        }
+
+
+                        var newCanvas = document.createElement('canvas');
+
+
+                        newCanvas.width = width;
+                        newCanvas.height = height;
+
+
 
                         var newContext = newCanvas.getContext('2d');
 
