@@ -832,7 +832,7 @@ main section.demo .info p {
                     if (replaceWith===null){
                         return false
                     }
-                    console.log(this.modelRegexRules)
+                    
 
                     if (!this.modelRegexRules[key]){
                         this.modelRegexRules[key]=[]
@@ -844,7 +844,7 @@ main section.demo .info p {
                         replaceWith:replaceWith
                     })
 
-                    console.log(this.modelRegexRules)
+                    
                 },
 
                 download: function(){
@@ -966,7 +966,7 @@ main section.demo .info p {
 
                         this.$nextTick(() => {
                            if (window.localStorage.getItem('text') && document.getElementById('text-area')){
-                                console.log("HEREREREERRE")
+                                
                               document.getElementById('text-area').value = window.localStorage.getItem('text')
                             }     
 
@@ -1207,7 +1207,7 @@ main section.demo .info p {
                                 index: this.data[this.activeDataIndex][key].length + 1
                             })
                             if (this.autoMove){
-                                console.log("yeeet")
+                                
                                 this.navDataElementSelected('down')
                                 break
                             }
@@ -1321,7 +1321,7 @@ main section.demo .info p {
         let selection
 
 
-        function renderSelectBlocks(data){
+        function renderSelectBlocks(data,dontShift){
 
 
             var img = document.getElementById('the-image'); 
@@ -1340,7 +1340,9 @@ main section.demo .info p {
                 paras[0].parentNode.removeChild(paras[0]);
             }
 
-            data.textAnnotations.shift()
+            if (!dontShift){
+                data.textAnnotations.shift()
+            }
 
             data.textAnnotations.forEach((b)=>{
 
@@ -1467,7 +1469,7 @@ main section.demo .info p {
                 onStop(event) {
                     
                     this.keepSelection();
-                    // console.log('aaaa',event)
+                    // 
                     document.getElementById('the-image').classList.remove('selected-thing')
 
                     
@@ -1476,7 +1478,7 @@ main section.demo .info p {
                         let xEnlargeBy = document.getElementById('the-image').naturalWidth / document.getElementById('the-image').width
 
                         let yEnlargeBy = document.getElementById('the-image').naturalHeight / document.getElementById('the-image').height
-                        console.log(event.selection)
+                        
                         let x1 = event.selection._areaX1 
                         let x2 = event.selection._areaX2 
                         let y1 = event.selection._areaY1 + window.scrollY
@@ -1643,7 +1645,7 @@ main section.demo .info p {
             
 
             document.addEventListener('keydown', (event)=>{
-                console.log(event.key)
+                
                 if (event.key == 'ArrowUp'){
                     Array.from(document.getElementsByClassName('pls-blur')).forEach(s => s.blur())
                     vueApp.navDataElementSelected('up')
@@ -1844,6 +1846,18 @@ main section.demo .info p {
 
         resizeTimer = window.setTimeout(function(){
 
+            // make a lookup of all the selectable things that have been selected so we dont loose what has been done
+            let counter = 0
+            let selectedLog = {}
+            for (let el of document.getElementsByClassName('selectable')){
+                if (el.classList.contains('selected-thing-added')){
+                    selectedLog[counter] = true
+                }else{
+                    selectedLog[counter] = false
+                }
+                counter++
+            }
+
 
 
             if (vueApp.currentMode() != 'text'){
@@ -1859,7 +1873,7 @@ main section.demo .info p {
 
 
                 if (Array.from(document.querySelectorAll('.page')).length == 0){
-                    renderSelectBlocks(data)
+                    renderSelectBlocks(data,true)
                 }
 
             }else{
@@ -1870,7 +1884,18 @@ main section.demo .info p {
             }
 
 
-            console.log("finer")
+            counter = 0
+            for (let el of document.getElementsByClassName('selectable')){
+
+                if (selectedLog[counter]===true){
+                    el.classList.add('selected-thing-added')
+                }
+                
+
+                counter++
+            }
+
+
             document.getElementById('window-resize').style.display='none'
 
 
