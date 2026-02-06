@@ -16,4 +16,5 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /app/GOOGLE_APPLICATION_CREDENTIALS.json
     ports:
       - 5555:5555
-    command: npm run dev    
+    restart: always
+    command: npm run start

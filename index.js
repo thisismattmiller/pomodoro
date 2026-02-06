@@ -163,7 +163,7 @@ app.post('/upload', function(req, res) {
 
 	let detect = async function(fileName, dontWriteOutput){
 		const [result] = await client.textDetection(fileName);
-		let dimensions = sizeOf(fileName);
+		let dimensions = sizeOf(fs.readFileSync(fileName));
 		result.dimensions = dimensions	
 		if (doingExample){
 			result.filename = 'example.png'
